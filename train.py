@@ -219,10 +219,9 @@ def main():
             # ensemble_loss = ensemble_cross_loss + ensemble_dice_loss
             # ### ensemble_loss
 
-            ### meta gss
+            ### meta
             meta_input_features = torch.cat([p.mean(dim=(-1, -2, -3)) for p in sep_preds], dim=1)
             T1_dynamic, T2_dynamic, fusion_balance_weight, beta_param, alpha_param = meta_network(meta_input_features)
-            ### meta gss
             final_soft_target_logits = Adaptive_Modality_Fuser(
                 all_logits[0], all_logits[1], all_logits[2], all_logits[3],
                 T1_dynamic, T2_dynamic, fusion_balance_weight, beta_param, alpha_param
@@ -248,7 +247,7 @@ def main():
             soft_sep_cross_loss += criterions.softmax_weighted_loss(t2_logits_masked, soft_target_t2, num_cls=num_cls)
 
             soft_sep_loss = soft_sep_cross_loss
-            ### meta gss
+            ### meta
 
 
             sep_cross_loss = torch.zeros(1).cuda().float()
@@ -356,3 +355,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
